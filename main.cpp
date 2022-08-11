@@ -17,7 +17,7 @@ void display(int width, char border, char direction, vector<string> frame) {
       cout << endl << string(blank, ' ') + frame[line];
       break;
     case 'l':
-      cout << frame[line] + string(blank, ' ');
+      cout << endl << frame[line] + string(blank, ' ');
       break;
     case 'c':
       cout << endl
@@ -42,18 +42,44 @@ vector<string> horizontal_bar(vector<tuple<int, string>> columns) {
   return frame;
 }
 
-// vector<string> vertical_bar(int bar_width)
+vector<string> vertical_bar(vector<tuple<int, string>> columns) {
+  vector<string> frame;
+  for (int column = 0; column < columns.size(); column++) {
+    frame.push_back(get<1>(columns[column]) + ": " + string(get<0>(columns[column]), '#'));
+  } 
+  return frame;
+}
 
-int main() {
+void example_text() {
   int display_w = 40;
+  vector<string> text = {"teste", "teste2"};
+  display(display_w, *"-", 'r', text);
+}
 
+void example_horizontal_bar() {
+  int display_w = 40;
   vector<tuple<int, string>> bar = {
     make_tuple(4, "texto"),
     make_tuple(2, "testing")
   };
   vector<string> h = horizontal_bar(bar);
   display(display_w, *"-", 'c', h);
+}
 
-  // vector<string> text = {"teste", "teste2"};
-  // display(display_w, *"-", 'r', text);
+void example_vertical_bar() {
+  int display_w = 40;
+  vector<tuple<int, string>> bar = {
+    make_tuple(4, "texto"),
+    make_tuple(2, "testing")
+  };
+  vector<string> h = vertical_bar(bar);
+  display(display_w, *"-", 'l', h);
+}
+
+int main() {
+  example_text();
+  cout << endl;
+  example_horizontal_bar();
+  cout << endl;
+  example_vertical_bar();
 }
