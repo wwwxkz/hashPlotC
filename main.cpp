@@ -42,10 +42,18 @@ vector<string> horizontal_bar(vector<tuple<int, string>> columns) {
   return frame;
 }
 
-vector<string> vertical_bar(vector<tuple<int, string>> columns) {
+vector<string> vertical_bar(vector<tuple<int, string>> columns, int align_by_label) {
   vector<string> frame;
+  int largest_label = 0;
+  if (align_by_label == 1) {
+      for (int column = 0; column < columns.size(); column++) {
+        if (get<1>(columns[column]).length() > largest_label) {
+          largest_label = get<1>(columns[column]).length();
+        }
+      }
+  }
   for (int column = 0; column < columns.size(); column++) {
-    frame.push_back(get<1>(columns[column]) + ": " + string(get<0>(columns[column]), '#'));
+    frame.push_back(get<1>(columns[column]) + string(largest_label - get<1>(columns[column]).length(), ' ') + ": " + string(get<0>(columns[column]), '#'));
   } 
   return frame;
 }
@@ -72,7 +80,7 @@ void example_vertical_bar() {
     make_tuple(4, "texto"),
     make_tuple(2, "testing")
   };
-  vector<string> h = vertical_bar(bar);
+  vector<string> h = vertical_bar(bar, 1);
   display(display_w, *"-", 'l', h);
 }
 
