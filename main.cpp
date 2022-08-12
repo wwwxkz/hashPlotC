@@ -89,7 +89,7 @@ class Plotter {
     }
 
     vector<string> pizza(vector<tuple<int, string>> slices, float radius) {
-      vector<string> frame;
+      vector<string> frame = {""};
       float l;
       // Terminal font/pixel size
       float k = 2;
@@ -100,12 +100,12 @@ class Plotter {
           l = ((i * k) / radius) * ((i * k) / radius) + (c / radius) * (c / radius);
           // Make it size-equal as terminal/console height is not width-height equivalent
           if (l > 0.95 && l < 1.08) {
-            cout << "*";
+            frame[frame.size()-1] += "*";
           } else {
-            cout << " ";
+            frame[frame.size()-1] += " ";
           }
         }
-        cout << "\n";
+        frame.push_back("");
       }
       return frame;
     }
@@ -219,7 +219,7 @@ class Menu {
         }
       }
     }
-    
+
   void help() {
     cout << "Examples       : e" << endl;
     cout << "Help           : h" << endl;
