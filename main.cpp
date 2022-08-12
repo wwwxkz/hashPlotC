@@ -13,7 +13,7 @@ using namespace std;
 
 class Plotter {
   public:
-    void display(int width, char border, char direction, vector<string> frame) {
+    void display(int width, char border, char position, vector<string> frame) {
       // Top border
       cout << string(width, border);
       // Cout frame content
@@ -21,7 +21,7 @@ class Plotter {
         // Calc blank spots removing content from display width
         int blank = width - frame[line].length();
         // Align content R, L, C using blank
-        switch (direction) {
+        switch (position) {
         case 'r':
           cout << endl << string(blank, ' ') + frame[line];
           break;
@@ -114,6 +114,9 @@ class Plotter {
 class Menu { 
   public:
     Menu() {
+      char border = *" "; 
+      char position = *" ";
+      int display_width;
       Plotter plotter;
       cout << "Type 'h' for help";
       while (1) {
@@ -123,23 +126,36 @@ class Menu {
         if (option == *"e") {
           this->examples(plotter);
         }
-        else if (option == *"h") {
+        if (option == *"h") {
           this->help();
         }
-        else if (option == *"c") {
+        if (option == *"c") {
           cout << "\033[H\033[J";
         }
-        else if (option == *"t" || option == *"b" || option == *"v" || option == *"p" || option == *"f") {
-          int table_width;
+        if (option == *"t" || option == *"b" || option == *"v" || option == *"p" || option == *"f") {
           cout << "Table width (40): ";
-          cin >> table_width;
-          char position;
+          cin >> display_width;
+          cout << "Border char (-, #, @): ";
+          cin >> border;
           while (position != *"r" && position != *"l" && position != *"c") {
             cout << "Position (l, r, c): ";
             cin >> position;
           }
         }
-        else if (option == *"q") {
+        if (option == *"t") {
+          vector<string> frame;
+          char end;
+          while (end != *"y") {
+            string text;
+            cout << "Text to append: ";
+            cin >> text;
+            frame.push_back(text);
+            cout << "End (y, n): ";
+            cin >> end;
+          }
+          plotter.display(display_width, border, position, frame);
+        }
+        if (option == *"q") {
           exit(0);
         }
       }
