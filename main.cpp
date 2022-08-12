@@ -6,7 +6,7 @@
 using namespace std;
 
 // [X] Class plotter
-// [ ] Class menu
+// [X] Class menu
 // [ ] plotter::function
 // [ ] plotter::horizontal_bar labels
 // [ ] plotter::pizza labels
@@ -111,52 +111,101 @@ class Plotter {
     }
 };
 
-void example_text(Plotter plotter) {
-  int display_width = 40;
-  vector<string> text = {
-    "Firs text", 
-    "Second text"
-  };
-  plotter.display(display_width, *"-", 'r', text);
-}
+class Menu { 
+  public:
+    Menu() {
+      Plotter plotter;
+      cout << "Type 'h' for help";
+      while (1) {
+        char option;
+        cout << endl << "@-->> ";
+        cin >> option;
+        if (option == *"e") {
+          this->examples(plotter);
+        }
+        else if (option == *"h") {
+          this->help();
+        }
+        else if (option == *"c") {
+          cout << "\033[H\033[J";
+        }
+        else if (option == *"t" || option == *"b" || option == *"v" || option == *"p" || option == *"f") {
+          int table_width;
+          cout << "Table width (40): ";
+          cin >> table_width;
+          char position;
+          while (position != *"r" && position != *"l" && position != *"c") {
+            cout << "Position (l, r, c): ";
+            cin >> position;
+          }
+        }
+        else if (option == *"q") {
+          exit(0);
+        }
+      }
+    }
+  void help() {
+    cout << "Examples       : e" << endl;
+    cout << "Help           : h" << endl;
+    cout << "Clear          : c" << endl;
+    cout << "Text           : t" << endl;
+    cout << "Horizontal Bar : b" << endl;
+    cout << "Pizza Bar      : p" << endl;
+    cout << "Vertical Bar   : v" << endl;
+    cout << "Function       : f" << endl;
+    cout << "Quit           : q" << endl;
+  }
 
-void example_horizontal_bar(Plotter plotter) {
-  int display_width = 40;
-  vector<tuple<int, string>> bar = {
-    make_tuple(4, "Testing bar label"),
-    make_tuple(2, "Another label")
-  };
-  vector<string> frame = plotter.horizontal_bar(bar);
-  plotter.display(display_width, *"-", 'l', frame);
-}
+  void examples(Plotter plotter) {
+    example_text(plotter);
+    cout << endl;
+    example_horizontal_bar(plotter);
+    cout << endl;
+    example_vertical_bar(plotter);
+    cout << endl;
+    example_pizza(plotter);
+  }
 
-void example_vertical_bar(Plotter plotter) {
-  int display_width = 40;
-  vector<tuple<int, string>> bar = {
-    make_tuple(4, "Vertical bar label"),
-    make_tuple(2, "My label")
-  };
-  vector<string> frame = plotter.vertical_bar(bar, 1);
-  plotter.display(display_width, *"-", 'l', frame);
-}
+  void example_text(Plotter plotter) {
+    int display_width = 40;
+    vector<string> text = {
+      "Firs text", 
+      "Second text"
+    };
+    plotter.display(display_width, *"-", 'r', text);
+  }
 
-void example_pizza(Plotter plotter) {
-  int display_width = 40;
-  vector<tuple<int, string>> p = {
-    make_tuple(4, "Pizza label test"),
-    make_tuple(2, "Testing pizza quality")
-  };
-  vector<string> frame = plotter.pizza(p, 10);
-  plotter.display(display_width, *"-", 'c', frame);
-}
+  void example_horizontal_bar(Plotter plotter) {
+    int display_width = 40;
+    vector<tuple<int, string>> bar = {
+      make_tuple(4, "Testing bar label"),
+      make_tuple(2, "Another label")
+    };
+    vector<string> frame = plotter.horizontal_bar(bar);
+    plotter.display(display_width, *"-", 'l', frame);
+  }
+
+  void example_vertical_bar(Plotter plotter) {
+    int display_width = 40;
+    vector<tuple<int, string>> bar = {
+      make_tuple(4, "Vertical bar label"),
+      make_tuple(2, "My label")
+    };
+    vector<string> frame = plotter.vertical_bar(bar, 1);
+    plotter.display(display_width, *"-", 'l', frame);
+  }
+
+  void example_pizza(Plotter plotter) {
+    int display_width = 40;
+    vector<tuple<int, string>> p = {
+      make_tuple(4, "Pizza label test"),
+      make_tuple(2, "Testing pizza quality")
+    };
+    vector<string> frame = plotter.pizza(p, 10);
+    plotter.display(display_width, *"-", 'c', frame);
+  }
+};
 
 int main() {
-  Plotter plotter;
-  example_text(plotter);
-  cout << endl;
-  example_horizontal_bar(plotter);
-  cout << endl;
-  example_vertical_bar(plotter);
-  cout << endl;
-  example_pizza(plotter);
+  Menu menu;
 }
