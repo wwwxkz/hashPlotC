@@ -70,12 +70,12 @@ class Plotter {
       return frame_reversed;
     }
 
-    vector<string> vertical_bar(vector<tuple<int, string>> columns, int align_by_label) {
+    vector<string> vertical_bar(vector<tuple<int, string>> columns, char align_by_label) {
       vector<string> frame;
       // Align label text using blank spaces as padding
       // Find largest label and follow adding blank spaces to subsequent labels
       int largest_label = 0;
-      if (align_by_label == 1) {
+      if (align_by_label == *"y") {
           for (int column = 0; column < columns.size(); column++) {
             if (get<1>(columns[column]).length() > largest_label) {
               largest_label = get<1>(columns[column]).length();
@@ -144,7 +144,7 @@ class Menu {
         }
         if (option == *"t") {
           vector<string> frame;
-          char end;
+          char end = *" ";
           while (end != *"y") {
             string text;
             cout << "Text to append: ";
@@ -155,11 +155,71 @@ class Menu {
           }
           plotter.display(display_width, border, position, frame);
         }
+        if (option == *"b") {
+          vector<tuple<int, string>> bar;
+          char end = *" ";
+          while (end != *"y") {
+            int value;
+            string label;
+            cout << "Bar value: ";
+            cin >> value;
+            cout << "Label text: ";
+            cin >> label;
+            bar.push_back(make_tuple(value, label));
+            cout << "End (y, n): ";
+            cin >> end;
+          }
+          vector<string> frame = plotter.horizontal_bar(bar);
+          plotter.display(display_width, border, position, frame);
+        }
+        if (option == *"p") {
+          vector<tuple<int, string>> pizza;
+          int radius;
+          cout << "Pizza radius (5, 10, 15): ";
+          cin >> radius;
+          char end = *" ";
+          while (end != *"y") {
+            int value;
+            string label;
+            cout << "Slice value: ";
+            cin >> value;
+            cout << "Slice text: ";
+            cin >> label;
+            pizza.push_back(make_tuple(value, label));
+            cout << "End (y, n): ";
+            cin >> end;
+          }
+          vector<string> frame = plotter.pizza(pizza, radius);
+          plotter.display(display_width, border, position, frame);
+        }
+        if (option == *"v") {
+          vector<tuple<int, string>> bar;
+          char align_by_label = *" ";
+          while (align_by_label != *"y" && align_by_label != *"n") {
+            cout << "Align by label (y, n): ";
+            cin >> align_by_label;
+          }
+          char end = *" ";
+          while (end != *"y") {
+            int value;
+            string label;
+            cout << "Bar value: ";
+            cin >> value;
+            cout << "Label text: ";
+            cin >> label;
+            bar.push_back(make_tuple(value, label));
+            cout << "End (y, n): ";
+            cin >> end;
+          }
+          vector<string> frame = plotter.vertical_bar(bar, align_by_label);
+          plotter.display(display_width, border, position, frame);
+        }
         if (option == *"q") {
           exit(0);
         }
       }
     }
+    
   void help() {
     cout << "Examples       : e" << endl;
     cout << "Help           : h" << endl;
@@ -207,7 +267,7 @@ class Menu {
       make_tuple(4, "Vertical bar label"),
       make_tuple(2, "My label")
     };
-    vector<string> frame = plotter.vertical_bar(bar, 1);
+    vector<string> frame = plotter.vertical_bar(bar, *"y");
     plotter.display(display_width, *"-", 'l', frame);
   }
 
