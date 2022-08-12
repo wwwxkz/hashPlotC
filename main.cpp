@@ -109,6 +109,38 @@ class Plotter {
       }
       return frame;
     }
+
+    vector<string> function(string function, int cartesian_plane_scale) {
+      vector<string> frame;
+      // Creates scale based in cartesian_plane_scale
+      // for -scale and +scale adding 0 between both
+      vector<int> scale;
+      for (int i = 0; i < cartesian_plane_scale; i++) {
+        // Negative number as -4 -3 -2 -1 instead of the natural way
+        // -1 -2 -3 -4 as it is the way graphs are shown
+        // -4 -3 -2 -1 0 1 2 3 4
+        scale.push_back(-(cartesian_plane_scale-i));
+      }
+      scale.push_back(0);
+      for (int i = 0; i < cartesian_plane_scale; i++) {
+        scale.push_back(i+1);
+      }
+      // Replace x in function by x from scale
+      // result for y value
+
+      // Create y axis
+        // Create x axis
+        // The function goes throught here?
+
+      // Cout scale
+      // for (int i = 0; i < scale.size(); i++) {
+      //   cout << scale[i];
+      // }
+
+      // Cout function
+      // cout << endl << function;
+      return frame;
+    }
 };
 
 class Menu { 
@@ -240,6 +272,8 @@ class Menu {
     example_vertical_bar(plotter);
     cout << endl;
     example_pizza(plotter);
+    cout << endl;
+    example_function(plotter);
   }
 
   void example_text(Plotter plotter) {
@@ -279,6 +313,10 @@ class Menu {
     };
     vector<string> frame = plotter.pizza(p, 10);
     plotter.display(display_width, *"-", 'c', frame);
+  }
+
+  void example_function(Plotter plotter) {
+    plotter.function("x**2", 5);
   }
 };
 
