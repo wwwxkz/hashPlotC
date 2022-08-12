@@ -5,6 +5,12 @@
 
 using namespace std;
 
+// [ ] Class plotter
+// [ ] Class menu
+// [ ] plotter::function
+// [ ] plotter::horizontal_bar labels
+// [ ] plotter::pizza labels
+
 void display(int width, char border, char direction, vector<string> frame) {
   // Top border
   cout << string(width, border);
@@ -80,30 +86,65 @@ vector<string> vertical_bar(vector<tuple<int, string>> columns, int align_by_lab
   return frame;
 }
 
+vector<string> pizza(vector<tuple<int, string>> slices, float radius) {
+  vector<string> frame;
+  float l;
+  // Terminal font/pixel size
+  float k = 2;
+  // Width
+  for (int i = -radius; i <= radius; i++) {
+    // Height
+    for (int c = -radius; c <= radius; c++) {
+      l = ((i * k) / radius) * ((i * k) / radius) + (c / radius) * (c / radius);
+      // Make it size-equal as terminal/console height is not width-height equivalent
+      if (l > 0.95 && l < 1.08) {
+        cout << "*";
+      } else {
+        cout << " ";
+      }
+    }
+    cout << "\n";
+  }
+  return frame;
+}
+
 void example_text() {
   int display_w = 40;
-  vector<string> text = {"teste", "teste2"};
+  vector<string> text = {
+    "Firs text", 
+    "Second text"
+  };
   display(display_w, *"-", 'r', text);
 }
 
 void example_horizontal_bar() {
   int display_w = 40;
   vector<tuple<int, string>> bar = {
-    make_tuple(4, "texto"),
-    make_tuple(2, "testing")
+    make_tuple(4, "Testing bar label"),
+    make_tuple(2, "Another label")
   };
-  vector<string> h = horizontal_bar(bar);
-  display(display_w, *"-", 'l', h);
+  vector<string> frame = horizontal_bar(bar);
+  display(display_w, *"-", 'l', frame);
 }
 
 void example_vertical_bar() {
   int display_w = 40;
   vector<tuple<int, string>> bar = {
-    make_tuple(4, "texto"),
-    make_tuple(2, "testing")
+    make_tuple(4, "Vertical bar label"),
+    make_tuple(2, "My label")
   };
-  vector<string> h = vertical_bar(bar, 1);
-  display(display_w, *"-", 'l', h);
+  vector<string> frame = vertical_bar(bar, 1);
+  display(display_w, *"-", 'l', frame);
+}
+
+void example_pizza() {
+  int display_w = 40;
+  vector<tuple<int, string>> p = {
+    make_tuple(4, "Pizza label test"),
+    make_tuple(2, "Testing pizza quality")
+  };
+  vector<string> frame = pizza(p, 10);
+  display(display_w, *"-", 'c', frame);
 }
 
 int main() {
@@ -112,4 +153,6 @@ int main() {
   example_horizontal_bar();
   cout << endl;
   example_vertical_bar();
+  cout << endl;
+  example_pizza();
 }
